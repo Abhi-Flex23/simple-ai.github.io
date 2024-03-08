@@ -12,9 +12,6 @@ const timers = {};
 async function getResponse(message) {
     const lowercaseMessage = message.toLowerCase();
 
-    // Translate the message to English (assuming translation API is used)
-    const englishMessage = await translateToEnglish(message);
-
     // Check if the message has a pre-defined response
     if (responses.hasOwnProperty(lowercaseMessage)) {
         const possibleResponses = responses[lowercaseMessage];
@@ -22,7 +19,7 @@ async function getResponse(message) {
     }
 
     // Check if the message is about setting a timer
-    const timerMatch = englishMessage.match(/(?:make|set) (\d+) (seconds?|minutes?|hours?) timer/i);
+    const timerMatch = message.match(/(?:make|set) (\d+) (seconds?|minutes?|hours?) timer/i);
     if (timerMatch) {
         const time = parseInt(timerMatch[1]);
         const unit = timerMatch[2].toLowerCase();
@@ -34,12 +31,12 @@ async function getResponse(message) {
     }
 
     // Check if the message is about World War I or World War II
-    if (englishMessage.includes("world war 1") || englishMessage.includes("world war i")) {
+    if (lowercaseMessage.includes("world war 1") || lowercaseMessage.includes("world war i")) {
         const worldWar1Info = await fetchWorldWarInfo("World_War_I");
         return worldWar1Info;
     }
 
-    if (englishMessage.includes("world war 2") || englishMessage.includes("world war ii")) {
+    if (lowercaseMessage.includes("world war 2") || lowercaseMessage.includes("world war ii")) {
         const worldWar2Info = await fetchWorldWarInfo("World_War_II");
         return worldWar2Info;
     }
@@ -48,38 +45,80 @@ async function getResponse(message) {
     return "I'm sorry, I don't understand that.";
 }
 
-// Function to translate message to English
-async function translateToEnglish(message) {
-    // Code to translate the message to English using translation API
-    return translatedMessage;
-}
-
 // Function to fetch information about World War I or World War II from Wikipedia
 async function fetchWorldWarInfo(worldWar) {
-    // Fetch information from Wikipedia API
-    // ...
+    try {
+        const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${worldWar}`);
+        const data = await response.json();
+
+        if (data.extract) {
+            return data.extract;
+        } else {
+            return "No information found for World War I or II.";
+        }
+    } catch (error) {
+        console.error(`Error fetching information for ${worldWar}:`, error);
+        return `Error fetching information for ${worldWar}.`;
+    }
 }
 
 // Function to calculate timer duration in milliseconds
 function calculateTimerDuration(time, unit) {
-    // Calculate timer duration
-    // ...
+    let duration = 0;
+    switch (unit) {
+        case "second":
+        case "seconds":
+            duration = time * 1000;
+            break;
+        case "minute":
+        case "minutes":
+            duration = time * 60 * 1000;
+            break;
+        case "hour":
+        case "hours":
+            duration = time * 60 * 60 * 1000;
+            break;
+    }
+    return duration;
 }
 
 // Function to set timer
 function setTimer(duration) {
-    // Set timer logic
-    // ...
+    const timerId = setTimeout(() => {
+        displayMessage("bot", "Timer done!");
+        delete timers[timerId];
+    }, duration);
+    timers[timerId] = true;
 }
 
 // Function to send message
 async function sendMessage() {
-    // Send message logic
-    // ...
+    const userInput = document.getElementById("user-input");
+    const message = userInput.value.trim();
+
+    if (message !== "") {
+        displayMessage("user", message);
+
+        const response = await getResponse(message);
+
+        setTimeout(() => {
+            displayMessage("bot", response);
+        }, 500);
+
+        userInput.value = "";
+    }
 }
 
 // Function to display message in the chat box
 function displayMessage(sender, message) {
-    // Display message logic
-    // ...
+    const chatBox = document.getElementById("chat-box");
+    const messageElement = document.createElement("div");
+
+    messageElement.classList.add("message", sender);
+    messageElement.innerText = message;
+
+    chatBox.appendChild(messageElement);
+
+    // Scroll to bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
