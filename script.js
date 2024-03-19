@@ -2,8 +2,12 @@
 const responses = {
     "hi": ["Hello!", "Hi there!", "Hey!"],
     "how are you?": ["I'm doing well, thank you!", "I'm great, thanks for asking!", "All good, how about you?"],
+    "hru": ["I'm doing well, thank you!", "I'm great, thanks for asking!", "All good, how about you?"],
     "what's your name?": ["I'm just a simple AI chatbot.", "You can call me ChatBot.", "I'm an AI assistant."],
-    "bye": ["Goodbye! Have a nice day.", "See you later!", "Take care!"]
+    "bye": ["Goodbye! Have a nice day.", "See you later!", "Take care!"],
+    "how to make pizza?": ["To make a pizza, you will need dough, tomato sauce, cheese, and your choice of toppings. Here's a simple recipe:\n1. Preheat your oven to 475°F (245°C).\n2. Roll out the dough on a floured surface to your desired thickness.\n3. Spread tomato sauce evenly over the dough, leaving a small border around the edges.\n4. Sprinkle shredded cheese over the sauce.\n5. Add your favorite toppings, such as pepperoni, mushrooms, onions, or bell peppers.\n6. Bake in the preheated oven for 12-15 minutes, or until the crust is golden brown and the cheese is bubbly and melted.\n7. Remove from the oven, let it cool for a few minutes, then slice and enjoy!"],
+    "what was world war 1?": "World War I, also known as the First World War or the Great War, was a global war that lasted from 1914 to 1918. It involved most of the world's great powers, and it was triggered by the assassination of Archduke Franz Ferdinand of Austria-Hungary.",
+    "what was world war 2?": "World War II, also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved many countries around the world, including all the great powers, and it was characterized by widespread destruction, genocide, and the use of atomic bombs."
 };
 
 const timers = {};
@@ -15,7 +19,11 @@ async function getResponse(message) {
     // Check if the message has a pre-defined response
     if (responses.hasOwnProperty(lowercaseMessage)) {
         const possibleResponses = responses[lowercaseMessage];
-        return possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
+        if (Array.isArray(possibleResponses)) {
+            return possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
+        } else {
+            return possibleResponses;
+        }
     }
 
     // Check if the message is about setting a timer
@@ -28,17 +36,6 @@ async function getResponse(message) {
             setTimer(timerDuration);
             return `Timer set for ${time} ${unit}.`;
         }
-    }
-
-    // Check if the message is about World War I or World War II
-    if (lowercaseMessage.includes("world war 1") || lowercaseMessage.includes("world war i")) {
-        const worldWar1Info = await fetchWorldWarInfo("World_War_I");
-        return worldWar1Info;
-    }
-
-    if (lowercaseMessage.includes("world war 2") || lowercaseMessage.includes("world war ii")) {
-        const worldWar2Info = await fetchWorldWarInfo("World_War_II");
-        return worldWar2Info;
     }
 
     // If no pre-defined response, timer command, or World War request, return a generic response
