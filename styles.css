@@ -1,105 +1,64 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-}
-
 body {
-    background: linear-gradient(135deg, #2980b9, #6ab3b8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
 }
 
-.chat-container {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.9); /* Set a translucent white background */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+#chat-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.chat-box {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+#chat-box {
+  overflow-y: auto;
+  max-height: 300px;
 }
 
 .message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 20px;
-    max-width: 70%;
-    word-wrap: break-word;
-    opacity: 0;
-    animation: fadeIn 0.5s ease forwards;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 20px;
 }
 
 .user {
-    background-color: #007bff;
-    color: #fff;
-    align-self: flex-end;
-    border-bottom-right-radius: 0;
+  background-color: #e3f2fd;
+  align-self: flex-end;
 }
 
 .bot {
-    background-color: #e5e5ea;
-    color: #333;
-    align-self: flex-start;
-    border-bottom-left-radius: 0;
+  background-color: #fce4ec;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+#input-container {
+  margin-top: 20px;
+  display: flex;
 }
 
-.user-input-container {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-top: 1px solid #ccc;
+#user-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 16px;
+  outline: none;
 }
 
-input[type="text"] {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    transition: border-color 0.3s ease;
-    font-family: 'Poppins', sans-serif;
-    margin-right: 10px;
+#send-button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-input[type="text"]:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-family: 'Poppins', sans-serif;
-}
-
-button:hover {
-    background-color: #45a049;
+#send-button:hover {
+  background-color: #0056b3;
 }
