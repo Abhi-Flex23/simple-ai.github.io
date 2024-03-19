@@ -1,15 +1,16 @@
-// service-worker.js
+const CACHE_NAME = 'chatbot-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/styles.css',
+  '/script.js',
+  '/path/to/icon.png'
+];
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('chatbot-cache').then(function(cache) {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/styles.css',
-        '/script.js',
-        '/path/to/icon.png'
-      ]);
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(urlsToCache);
     })
   );
 });
