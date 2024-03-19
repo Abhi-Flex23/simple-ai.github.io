@@ -1,14 +1,13 @@
 // Define pre-defined responses and timers
 const responses = {
-    "Hi": ["Hello!", "Hi there!", "Hey!"],
+    "hi": ["Hello!", "Hi there!", "Hey!"],
     "how are you?": ["I'm doing well, thank you!", "I'm great, thanks for asking!", "All good, how about you?"],
     "hru": ["I'm doing well, thank you!", "I'm great, thanks for asking!", "All good, how about you?"],
-    "How are you?": ["I'm doing well, thank you!", "I'm great, thanks for asking!", "All good, how about you?"],
+    "how are you": ["I'm doing well, thank you!", "I'm great, thanks for asking!", "All good, how about you?"],
     "what's your name?": ["I'm just a simple AI chatbot.", "You can call me ChatBot.", "I'm an AI assistant."],
     "bye": ["Goodbye! Have a nice day.", "See you later!", "Take care!"],
     "how to make pizza?": ["To make a pizza, you will need dough, tomato sauce, cheese, and your choice of toppings. Here's a simple recipe:\n1. Preheat your oven to 475°F (245°C).\n2. Roll out the dough on a floured surface to your desired thickness.\n3. Spread tomato sauce evenly over the dough, leaving a small border around the edges.\n4. Sprinkle shredded cheese over the sauce.\n5. Add your favorite toppings, such as pepperoni, mushrooms, onions, or bell peppers.\n6. Bake in the preheated oven for 12-15 minutes, or until the crust is golden brown and the cheese is bubbly and melted.\n7. Remove from the oven, let it cool for a few minutes, then slice and enjoy!"],
 };
-
 
 const timers = {};
 
@@ -26,6 +25,17 @@ async function getResponse(message) {
         }
     }
 
+    // Check if the message is a mathematical expression
+    const mathExpressionMatch = message.match(/^[+\-*/^0-9().\s]+$/);
+    if (mathExpressionMatch) {
+        try {
+            const result = eval(mathExpressionMatch[0]);
+            return `The result of ${mathExpressionMatch[0]} is ${result}.`;
+        } catch (error) {
+            return "Sorry, I couldn't evaluate that expression.";
+        }
+    }
+
     // Check if the message is about setting a timer
     const timerMatch = message.match(/(?:make|set) (\d+) (seconds?|minutes?|hours?) timer/i);
     if (timerMatch) {
@@ -38,7 +48,7 @@ async function getResponse(message) {
         }
     }
 
-    // If no pre-defined response, timer command, or World War request, return a generic response
+    // If no pre-defined response, timer command, or mathematical expression, return a generic response
     return "I'm sorry, I don't understand that.";
 }
 
